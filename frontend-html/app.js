@@ -92,7 +92,7 @@ document.getElementById('register-form').addEventListener('submit', (e) => {
 document.getElementById('logout-btn').addEventListener('click', () => {
     localStorage.clear();
     // Redirects up one folder level to landing.html
-    window.location.href = 'Landingpage.html';
+    window.location.href = 'index.html';
 });
 
 // --- TASKS & KANBAN LOGIC ---

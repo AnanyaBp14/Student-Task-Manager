@@ -3,183 +3,500 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyFlow</title>
-    <link rel="stylesheet" href="style.css">
+    <title>StudyFlow - Student Task Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            /* Exact Colors from Screenshot */
+            --bg-gradient-start: #4f46e5; /* Indigo/Purple */
+            --bg-gradient-mid: #7c3aed;   /* Lighter Purple */
+            --bg-gradient-end: #eef2ff;   /* Very light blue bottom */
+            
+            --text-hero: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            
+            --btn-white-bg: #ffffff;
+            --btn-white-text: #4f46e5;
+            
+            --card-icon-bg: #e0e7ff;
+            --card-icon-color: #4338ca;
+            
+            --footer-bg: #1e293b; /* Dark Navy */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* --- HERO SECTION (The Purple/Blue Gradient) --- */
+        .hero-section {
+            /* This gradient matches your image: Top Left Blue/Purple -> Bottom Right White fade */
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 60%, var(--bg-gradient-end) 100%);
+            min-height: 100vh; /* Full screen height */
+            position: relative;
+            padding-bottom: 4rem;
+            color: white;
+            /* clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); */ /* REMOVED for rectangular bottom */
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 10%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.2);
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background: rgba(255,255,255,0.3); }
+
+        /* Hero Content */
+        .hero-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4rem 10%;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 4rem;
+        }
+
+        .hero-text {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem; /* Large Headline */
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 2.5rem;
+            max-width: 480px;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--btn-white-text);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.5);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .btn-secondary:hover { 
+            background: rgba(255,255,255,0.2); 
+            border-color: white;
+        }
+
+        /* Hero Image Wrapper */
+        .hero-image-wrapper {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        /* --- FEATURES SECTION --- */
+        .section {
+            padding: 6rem 10%;
+            text-align: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--text-dark);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .section-subtitle {
+            color: var(--text-muted);
+            margin-bottom: 4rem;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
+            text-align: left;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #f1f5f9;
+        }
+        .feature-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: var(--card-icon-bg);
+            color: var(--card-icon-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+
+        /* --- HOW IT WORKS (Timeline) --- */
+        .timeline-wrapper {
+            position: relative;
+            margin-top: 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            text-align: center;
+        }
+        
+        /* The horizontal line connecting steps */
+        .timeline-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 50px;
+            right: 50px;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 0;
+        }
+
+        .step-item {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .step-icon-circle {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border: 2px solid var(--card-icon-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--card-icon-color);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .step-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        .step-item p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+
+        /* --- FOOTER (Dark Navy) --- */
+        footer {
+            background: var(--footer-bg);
+            color: #94a3b8;
+            padding: 5rem 10% 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            margin-bottom: 4rem;
+        }
+
+        .footer-brand h2 { color: white; margin-bottom: 1rem; }
+        .footer-brand p { max-width: 300px; font-size: 0.9rem; line-height: 1.6; }
+
+        .footer-col h4 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.8rem; }
+        .footer-col ul li a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        .footer-col ul li a:hover { color: white; }
+
+        .footer-bottom {
+            border-top: 1px solid #334155;
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            font-size: 0.85rem;
+        }
+        .social-icons i {
+            margin-left: 1rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .social-icons i:hover { color: white; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .hero-container { flex-direction: column; text-align: center; padding-top: 8rem; }
+            .hero-text { margin-bottom: 3rem; }
+            .hero-text h1 { font-size: 2.8rem; }
+            .cta-group { justify-content: center; }
+            .nav-links { display: none; } /* Hide links on tablet */
+            .timeline-wrapper { flex-direction: column; gap: 3rem; }
+            .timeline-wrapper::before { display: none; } /* Hide line on mobile */
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 
-    <div id="notification" class="notification hidden"></div>
-
-    <div id="auth-screen" class="auth-container">
-        <div class="auth-left">
-            <div class="brand">
-                <i class="fas fa-book-open"></i> StudyFlow
-            </div>
-            <h1>Manage your studies efficiently.</h1>
-            <p>Track assignments, exams, and personal tasks all in one place.</p>
-        </div>
-        <div class="auth-right">
-            
-            <div id="login-box" class="auth-card">
-                <h2>Welcome Back</h2>
-                <p class="auth-sub">Enter your email and password to access your dashboard.</p>
-                <form id="login-form">
-                    <div class="input-group">
-                        <label>Email Address</label>
-                        <input type="email" id="login-email" placeholder="student@example.com" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Password</label>
-                        <input type="password" id="login-password" placeholder="••••••••" required>
-                    </div>
-                    <button type="submit" class="btn-primary full-width">Sign In</button>
-                </form>
-                <p class="switch-auth">New here? <a href="#" onclick="toggleAuth('register')">Create an account</a></p>
-            </div>
-
-            <div id="register-box" class="auth-card hidden">
-                <h2>Create Account</h2>
-                <p class="auth-sub">Get started with StudyFlow today.</p>
-                <form id="register-form">
-                    <div class="input-group">
-                        <label>Full Name</label>
-                        <input type="text" id="reg-name" placeholder="John Doe" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Email Address</label>
-                        <input type="email" id="reg-email" placeholder="student@example.com" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Password</label>
-                        <input type="password" id="reg-password" placeholder="Create a password" required>
-                    </div>
-                    <button type="submit" class="btn-primary full-width">Sign Up</button>
-                </form>
-                <p class="switch-auth">Already have an account? <a href="#" onclick="toggleAuth('login')">Sign In</a></p>
-            </div>
-
-        </div>
-    </div>
-
-    <div id="dashboard-screen" class="hidden">
-        
-        <header class="navbar">
+    <div class="hero-section">
+        <nav>
             <div class="logo">
-                <i class="fas fa-book-open"></i> StudyFlow
+                <i class="fas fa-layer-group"></i> StudyFlow
             </div>
-            <div class="user-menu">
-                <div class="user-info">
-                    <div class="avatar"><i class="fas fa-user"></i></div>
-                    <span id="user-display">Alex Student</span>
-                </div>
-                <button id="logout-btn" class="btn-text">Logout</button>
-            </div>
-        </header>
+            <a href="dashboard.html" class="nav-btn">Login</a>
+        </nav>
 
-        <main class="dashboard-content">
-            
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div class="stat-info">
-                        <h3>Total Tasks</h3>
-                        <span id="stat-total" class="stat-number">0</span>
-                    </div>
-                    <div class="stat-icon icon-blue"><i class="fas fa-list-ul"></i></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-info">
-                        <h3>Due Today</h3>
-                        <span id="stat-due" class="stat-number">0</span>
-                    </div>
-                    <div class="stat-icon icon-orange"><i class="far fa-clock"></i></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-info">
-                        <h3>Completed</h3>
-                        <span id="stat-completed" class="stat-number">0</span>
-                    </div>
-                    <div class="stat-icon icon-green"><i class="far fa-check-circle"></i></div>
-                </div>
-            </div>
-
-            <div class="board-header">
-                <h2>Tasks Board</h2>
-                <button onclick="openModal()" class="btn-primary"><i class="fas fa-plus"></i> Add Task</button>
-            </div>
-
-            <div class="kanban-board">
+        <div class="hero-container">
+            <div class="hero-text">
+                <h1>Organize Tasks.<br>Track Deadlines.<br>Stress-Free Studies.</h1>
+                <p>Streamline your assignments and exam prep with our all-in-one management system designed for modern students.</p>
                 
-                <div class="kanban-column">
-                    <div class="column-header">
-                        <span class="dot dot-blue"></span> To-Do <span id="count-todo" class="count-badge">0</span>
-                    </div>
-                    <div id="col-todo" class="task-container"></div>
+                <div class="cta-group">
+                    <a href="dashboard.html" class="btn-primary">Login to Dashboard</a>
                 </div>
-
-                <div class="kanban-column">
-                    <div class="column-header">
-                        <span class="dot dot-orange"></span> In Progress <span id="count-inprogress" class="count-badge">0</span>
-                    </div>
-                    <div id="col-inprogress" class="task-container"></div>
-                </div>
-
-                <div class="kanban-column">
-                    <div class="column-header">
-                        <span class="dot dot-green"></span> Done <span id="count-done" class="count-badge">0</span>
-                    </div>
-                    <div id="col-done" class="task-container"></div>
-                </div>
-
             </div>
-        </main>
-    </div>
 
-    <div id="task-modal" class="modal hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Add New Task</h3>
-                <span onclick="closeModal()" class="close-icon">&times;</span>
+            <div class="hero-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" 
+                     alt="StudyFlow Abstract 3D" 
+                     style="width: 100%; max-width: 600px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);">
             </div>
-            <form id="task-form">
-                <div class="input-group">
-                    <label>Task Title</label>
-                    <input type="text" id="task-title" required placeholder="e.g. Math Assignment">
-                </div>
-                <div class="input-group">
-                    <label>Description</label>
-                    <textarea id="task-desc" rows="3" placeholder="Details about the task..."></textarea>
-                </div>
-                <div class="row">
-                    <div class="input-group">
-                        <label>Category</label>
-                        <select id="task-category">
-                            <option value="Assignment">Assignment</option>
-                            <option value="Exam">Exam</option>
-                            <option value="Project">Project</option>
-                            <option value="Personal">Personal</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>Due Date</label>
-                        <input type="date" id="task-date">
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label>Status</label>
-                    <select id="task-status">
-                        <option value="todo">To-Do</option>
-                        <option value="inprogress">In Progress</option>
-                        <option value="done">Done</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-primary full-width">Create Task</button>
-            </form>
         </div>
     </div>
 
-    <script src="app.js"></script>
+
+    <section class="section" id="features">
+        <h2 class="section-title">Everything you need to manage your semester</h2>
+        <p class="section-subtitle">Powerful features wrapped in a calm, intuitive interface.</p>
+
+        <div class="grid-4">
+            <div class="feature-card">
+                <div class="icon-box"><i class="fas fa-tasks"></i></div>
+                <h3>Smart Task Lists</h3>
+                <p>Track assignments and exams seamlessly in one unified dashboard.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-box"><i class="fas fa-calculator"></i></div>
+                <h3>Deadline Calc</h3>
+                <p>Automatically calculate remaining days for submissions and prep.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-box"><i class="fas fa-th-large"></i></div>
+                <h3>Kanban Boards</h3>
+                <p>Dedicated boards for "To Do", "In Progress" and "Done" statuses.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-box"><i class="fas fa-shield-alt"></i></div>
+                <h3>Secure Data</h3>
+                <p>Keep your academic plans private, secure, and easily exportable.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section" id="how-it-works" style="background-color: #f8fafc;">
+        <h2 class="section-title">How it works</h2>
+        <p class="section-subtitle">A simple workflow for complex academic management.</p>
+
+        <div class="timeline-wrapper">
+            <div class="step-item">
+                <div class="step-icon-circle"><i class="fas fa-sign-in-alt"></i></div>
+                <h4>Login Securely</h4>
+                <p>Access your dashboard as a Student with a secure email login.</p>
+            </div>
+            <div class="step-item">
+                <div class="step-icon-circle"><i class="fas fa-plus"></i></div>
+                <h4>Add Activity</h4>
+                <p>Record assignments and view real-time deadline updates.</p>
+            </div>
+            <div class="step-item">
+                <div class="step-icon-circle"><i class="fas fa-robot"></i></div>
+                <h4>Auto-Sort</h4>
+                <p>System prioritizes urgent tasks instantly based on dates.</p>
+            </div>
+            <div class="step-item">
+                <div class="step-icon-circle"><i class="fas fa-file-alt"></i></div>
+                <h4>View Reports</h4>
+                <p>Generate completion history and progress reports with one click.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h2>StudyFlow System</h2>
+                <p>The modern standard for transparent task and deadline management.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Security</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 StudyFlow System. All rights reserved.</p>
+            <div class="social-icons">
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-linkedin"></i>
+                <i class="fab fa-instagram"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
 </body>
 </html>
