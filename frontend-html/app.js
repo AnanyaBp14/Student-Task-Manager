@@ -1,4 +1,5 @@
-const API_URL = 'https://task-manager-api.onrender.com/api';
+// ✅ CORRECTED: This uses your ACTUAL Render Backend URL
+const API_URL = 'https://student-task-manager-dkzn.onrender.com/api';
 
 // --- STATE ---
 let token = localStorage.getItem('token');
@@ -51,12 +52,10 @@ async function handleAuth(endpoint, data) {
         });
 
         // 1. CHECK IF RESPONSE IS OK BEFORE PARSING
-        // This prevents the "Unexpected token S" error if server crashes
         const isJson = res.headers.get('content-type')?.includes('application/json');
         const result = isJson ? await res.json() : null; 
 
         if (!res.ok) {
-            // If the server sent text (like "Server Error"), use that. Otherwise use the JSON msg.
             const errorText = result && result.msg ? result.msg : await res.text();
             throw new Error(errorText || 'Something went wrong');
         }
@@ -88,10 +87,10 @@ document.getElementById('register-form').addEventListener('submit', (e) => {
     handleAuth('register', { name, email, password });
 });
 
-// --- LOGOUT (UPDATED) ---
+// --- LOGOUT ---
 document.getElementById('logout-btn').addEventListener('click', () => {
     localStorage.clear();
-    // Redirects up one folder level to landing.html
+    // Redirects to index.html (Landing Page) in the same folder
     window.location.href = 'index.html';
 });
 
@@ -129,7 +128,7 @@ function renderKanban(tasks) {
 
         const card = document.createElement('div');
         card.className = 'task-card';
-        card.draggable = true; // For future drag and drop
+        card.draggable = true; 
         
         // Format Date
         const dateStr = task.dueDate ? new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'No Date';
