@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyFlow</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+</head>
+<body>
+
+    <div id="notification" class="notification hidden"></div>
+
+    <div id="auth-screen" class="auth-container">
+        <div class="auth-left">
+            <div class="brand">
+                <i class="fas fa-book-open"></i> StudyFlow
+            </div>
+            <h1>Manage your studies efficiently.</h1>
+            <p>Track assignments, exams, and personal tasks all in one place.</p>
+        </div>
+        <div class="auth-right">
+            
+            <div id="login-box" class="auth-card">
+                <h2>Welcome Back</h2>
+                <p class="auth-sub">Enter your email and password to access your dashboard.</p>
+                <form id="login-form">
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" id="login-email" placeholder="student@example.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-primary full-width">Sign In</button>
+                </form>
+                <p class="switch-auth">New here? <a href="#" onclick="toggleAuth('register')">Create an account</a></p>
+            </div>
+
+            <div id="register-box" class="auth-card hidden">
+                <h2>Create Account</h2>
+                <p class="auth-sub">Get started with StudyFlow today.</p>
+                <form id="register-form">
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" id="reg-name" placeholder="John Doe" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" id="reg-email" placeholder="student@example.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="reg-password" placeholder="Create a password" required>
+                    </div>
+                    <button type="submit" class="btn-primary full-width">Sign Up</button>
+                </form>
+                <p class="switch-auth">Already have an account? <a href="#" onclick="toggleAuth('login')">Sign In</a></p>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="dashboard-screen" class="hidden">
+        
+        <header class="navbar">
+            <div class="logo">
+                <i class="fas fa-book-open"></i> StudyFlow
+            </div>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="avatar"><i class="fas fa-user"></i></div>
+                    <span id="user-display">Alex Student</span>
+                </div>
+                <button id="logout-btn" class="btn-text">Logout</button>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Total Tasks</h3>
+                        <span id="stat-total" class="stat-number">0</span>
+                    </div>
+                    <div class="stat-icon icon-blue"><i class="fas fa-list-ul"></i></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Due Today</h3>
+                        <span id="stat-due" class="stat-number">0</span>
+                    </div>
+                    <div class="stat-icon icon-orange"><i class="far fa-clock"></i></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Completed</h3>
+                        <span id="stat-completed" class="stat-number">0</span>
+                    </div>
+                    <div class="stat-icon icon-green"><i class="far fa-check-circle"></i></div>
+                </div>
+            </div>
+
+            <div class="board-header">
+                <h2>Tasks Board</h2>
+                <button onclick="openModal()" class="btn-primary"><i class="fas fa-plus"></i> Add Task</button>
+            </div>
+
+            <div class="kanban-board">
+                
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <span class="dot dot-blue"></span> To-Do <span id="count-todo" class="count-badge">0</span>
+                    </div>
+                    <div id="col-todo" class="task-container"></div>
+                </div>
+
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <span class="dot dot-orange"></span> In Progress <span id="count-inprogress" class="count-badge">0</span>
+                    </div>
+                    <div id="col-inprogress" class="task-container"></div>
+                </div>
+
+                <div class="kanban-column">
+                    <div class="column-header">
+                        <span class="dot dot-green"></span> Done <span id="count-done" class="count-badge">0</span>
+                    </div>
+                    <div id="col-done" class="task-container"></div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <div id="task-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Task</h3>
+                <span onclick="closeModal()" class="close-icon">&times;</span>
+            </div>
+            <form id="task-form">
+                <div class="input-group">
+                    <label>Task Title</label>
+                    <input type="text" id="task-title" required placeholder="e.g. Math Assignment">
+                </div>
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea id="task-desc" rows="3" placeholder="Details about the task..."></textarea>
+                </div>
+                <div class="row">
+                    <div class="input-group">
+                        <label>Category</label>
+                        <select id="task-category">
+                            <option value="Assignment">Assignment</option>
+                            <option value="Exam">Exam</option>
+                            <option value="Project">Project</option>
+                            <option value="Personal">Personal</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Due Date</label>
+                        <input type="date" id="task-date">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Status</label>
+                    <select id="task-status">
+                        <option value="todo">To-Do</option>
+                        <option value="inprogress">In Progress</option>
+                        <option value="done">Done</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary full-width">Create Task</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
